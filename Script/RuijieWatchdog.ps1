@@ -33,8 +33,7 @@ function Get-RuijieStatus {
     }
     catch [Microsoft.PowerShell.Commands.ProcessCommandException]{
         Write-Host "锐捷未运行，正在启动..." -NoNewline -ForegroundColor Yellow
-        Start-Network -FilePath $FilePath
-        $RuijieProcess=Get-Process -Name $ProcessName
+        $RuijieProcess=Start-Network -FilePath $FilePath -ProcessName $RuijieProcessName
         Write-Host "锐捷正在运行" -ForegroundColor Green
     }
     return $RuijieProcess
@@ -42,11 +41,13 @@ function Get-RuijieStatus {
 
 function Start-Network {
     param (
+        [string]$ProcessName="8021x",
         [string]$FilePath="C:\Program Files\锐捷网络\Ruijie Supplicant\8021x.exe",
         [string]$Arguments="-ssbero2008d -user"
     )
     try {
         Start-Process -FilePath $FilePath -ArgumentList $Arguments -ErrorAction Stop
+        return Get-Process -Name $ProcessName
     }
     catch [System.InvalidOperationException]{
         Write-Host "Filepath error!" -ForegroundColor Red
@@ -73,8 +74,8 @@ function Restart-Network {
     )
     Stop-Network -ProcessName $ProcessName
     Start-Sleep -Seconds 3
-    Start-Network -FilePath $FilePath -ArgumentList $Arguments
-    return Get-Process -Name $ProcessName
+    $RuijieProcess=Start-Network -FilePath $FilePath -ArgumentList $Arguments -ProcessName $ProcessName
+    return $RuijieProcess
 }
 
 
