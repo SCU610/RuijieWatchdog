@@ -1,0 +1,5 @@
+[*.{md}]
+charset = utf-8
+
+[*.{ps1}]
+charset = gbk
