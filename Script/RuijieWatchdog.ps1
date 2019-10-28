@@ -1,8 +1,10 @@
-$AdapterAliasName="以太网"
-$RuijiePath="D:\Program Files\锐捷网络\Ruijie Supplicant\8021x.exe"
-$RuijieProcessName="8021x"
-$CheckInterval=1
-
+[CmdletBinding()]
+param (
+    [string]$AdapterAliasName="Campus Network",
+    [string]$RuijiePath="C:\Program Files\锐捷网络\Ruijie Supplicant\8021x.exe",
+    [string]$RuijieProcessName="8021x",
+    [Int32]$CheckInterval=1
+)
 
 function Get-AdminStatus {
     $CurrentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
@@ -98,5 +100,9 @@ do {
         $RuijieStatus=Restart-Network -ProcessName $RuijieProcessName -FilePath $RuijiePath
         Write-Host "`t已连接" -ForegroundColor Green
     }
-    Start-Sleep -Seconds ($CheckInterval*15)
+    else {
+        $CurrentTime=(Get-Date).ToString()
+        Write-Host $CurrentTime "`t已连接" -ForegroundColor Green
+    }
+    Start-Sleep -Seconds ($CheckInterval*60)
 } while (1)
