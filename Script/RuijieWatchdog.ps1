@@ -93,16 +93,16 @@ Write-Host "开始监控:" -ForegroundColor Green
 
 do {
     $InternetStatus=Get-InternetStatus -ProfileName $AdapterAliasName
+    $CurrentTime=(Get-Date).ToString()
+    Write-Host $CurrentTime -NoNewline
     if (-not $InternetStatus) {
-        $CurrentTime=(Get-Date).ToString()
-        Write-Host $CurrentTime "`t已断网" -NoNewline -ForegroundColor Red
+        Write-Host "`t已断网" -NoNewline -ForegroundColor Red
         Write-Host "`t正在重连" -NoNewline -ForegroundColor Yellow
         $RuijieStatus=Restart-Network -ProcessName $RuijieProcessName -FilePath $RuijiePath
         Write-Host "`t已连接" -ForegroundColor Green
     }
     else {
-        $CurrentTime=(Get-Date).ToString()
-        Write-Host $CurrentTime "`t已连接" -ForegroundColor Green
+        Write-Host "`t已连接" -ForegroundColor Green
     }
     Start-Sleep -Seconds ($CheckInterval*60)
 } while (1)
