@@ -61,7 +61,7 @@ function Stop-Network {
         [string]$ProcessName="8021x"
     )
     try {
-        Stop-Process -Name $ProcessName -ErrorAction Stop
+        Stop-Process -Name $ProcessName -Force -ErrorAction Stop
     }
     catch [Microsoft.PowerShell.Commands.ProcessCommandException]{
         Write-Host "Process name error!" -ForegroundColor Red
